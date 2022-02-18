@@ -1,0 +1,13 @@
+[Unit]
+Description=AUpdater DDNS Client
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=java -Xmx16m -jar /root/AUpdater.jar /root/aupdater.properties
+ExecStop=/bin/kill -15 $MAINPID
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

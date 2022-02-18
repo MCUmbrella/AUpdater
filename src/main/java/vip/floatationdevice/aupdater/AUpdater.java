@@ -16,7 +16,7 @@ public class AUpdater
 
     // default config file path: "./aupdater.properties"
     // can be overridden by command line argument
-    static String configPath ="aupdater.properties";
+    static String configPath = "aupdater.properties";
 
     static String
             login_token,
@@ -46,7 +46,7 @@ public class AUpdater
     public static void main(String[] args)
     {
         // override default config path?
-        switch(args.length)
+        switch (args.length)
         {
             case 0:
                 break;
@@ -66,14 +66,14 @@ public class AUpdater
             loadConfig();
             System.out.println("Config loaded");
             // just a test?
-            if(args.length == 2)
+            if (args.length == 2)
             {
-                if(args[1].equals("--test"))
+                if (args[1].equals("--test"))
                 {
                     System.out.println("=================================================="
                             + "\nConfig file test passed:"
                             + "\n  login_token = " + login_token
-                            + "\n  token_id = "+ token_id
+                            + "\n  token_id = " + token_id
                             + "\n  domain_id = " + domain_id
                             + "\n  subdomain_id = " + subdomain_id
                             + "\n  subdomain_name = " + subdomain_name
@@ -90,7 +90,7 @@ public class AUpdater
                     System.exit(1);
                 }
             }
-        }catch (Exception e)
+        } catch (Exception e)
         {
             System.err.println("Error loading config file");
             e.printStackTrace();
@@ -103,11 +103,11 @@ public class AUpdater
             System.out.println("Getting previous IP record");
             prevIP = getPreviousIP();
             System.out.println("Previous IP: " + prevIP);
-        }catch (Exception e)
+        } catch (Exception e)
         {
             System.err.println("Getting previous IP address failed");
             e.printStackTrace();
-            prevIP="0.0.0.0";
+            prevIP = "0.0.0.0";
         }
 
         // run updater loop
@@ -121,21 +121,21 @@ public class AUpdater
                     System.out.println("Getting local IP address");
                     ip = getLocalIP();
                     System.out.println("Local IP: " + ip);
-                }catch(Exception e)
+                } catch (Exception e)
                 {
                     System.err.println("Getting local IP address failed");
                     e.printStackTrace();
                     ip = prevIP;
-                    System.out.println("Next update scheduled in "+update_interval_minutes_err+" minute(s)");
-                    Thread.sleep((long)update_interval_minutes_err*60*1000);
+                    System.out.println("Next update scheduled in " + update_interval_minutes_err + " minute(s)");
+                    Thread.sleep((long) update_interval_minutes_err * 60 * 1000);
                     continue;
                 }
 
                 // skip if ip is the same as previous
-                if(ip.equals(prevIP))
+                if (ip.equals(prevIP))
                 {
-                    System.out.println("IP address is the same as previous one\nNext update scheduled in "+update_interval_minutes+" minute(s)");
-                    Thread.sleep((long)update_interval_minutes*60*1000);
+                    System.out.println("IP address is the same as previous one\nNext update scheduled in " + update_interval_minutes + " minute(s)");
+                    Thread.sleep((long) update_interval_minutes * 60 * 1000);
                     continue;
                 }
 
@@ -145,20 +145,23 @@ public class AUpdater
                     System.out.println("Updating record");
                     updateRecord();
                     System.out.println("Update record success: " + prevIP + " to " + ip);
-                }catch(Exception e)
+                } catch (Exception e)
                 {
                     System.err.println("Failed to update record");
                     e.printStackTrace();
                     System.out.println("Next update scheduled in " + update_interval_minutes_err + " minute(s)");
-                    Thread.sleep((long)update_interval_minutes_err*60*1000);
+                    Thread.sleep((long) update_interval_minutes_err * 60 * 1000);
                     continue;
                 }
 
                 // update previous ip, sleep for 30 minutes
-                prevIP=ip;
+                prevIP = ip;
                 System.out.println("Next update scheduled in " + update_interval_minutes + " minute(s)");
-                Thread.sleep((long)update_interval_minutes*60*1000);
-            }while(true);
-        }catch (InterruptedException e){e.printStackTrace();}
+                Thread.sleep((long) update_interval_minutes * 60 * 1000);
+            } while (true);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
